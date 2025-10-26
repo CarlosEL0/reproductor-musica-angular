@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+/* src/styles.css */
+:root {
+  /* Paleta de Colores */
+  --color-negro: #000000;
+  --color-negro-fondo: #121212; /* Fondo principal */
+  --color-gris-oscuro: #282828; /* Superficies (cards, reproductor) */
+  --color-gris-claro: #B3B3B3;   /* Texto secundario */
+  --color-blanco: #FFFFFF;       /* Texto principal, iconos */
+  --color-verde-spotify: #1DB954; /* Acentos, botones */
+
+  /* Tipografía */
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--color-negro-fondo);
+  color: var(--color-blanco);
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Evita el scroll general */
+}
+
+/* Clases de utilidad */
+.text-secondary {
+  color: var(--color-gris-claro);
+}
+
+.text-main {
+  color: var(--color-blanco);
+}
