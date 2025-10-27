@@ -6,6 +6,6 @@ import { Component } from '@angular/core';
   templateUrl: './playback-controls.html',
   styleUrl: './playback-controls.css'
 })
-export class PlaybackControls {
+export class PlaybackControlsComponent {
 
 }

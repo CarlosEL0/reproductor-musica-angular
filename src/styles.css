@@ -19,10 +19,11 @@ body {
   color: var(--color-blanco);
   margin: 0;
   padding: 0;
-  overflow: hidden; /* Evita el scroll general */
+  /* Evita el scroll general de la página */
+  overflow: hidden; 
 }
 
-/* Clases de utilidad */
+/* Clases de utilidad que usaremos después */
 .text-secondary {
   color: var(--color-gris-claro);
 }
