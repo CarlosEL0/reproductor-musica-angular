@@ -1,1 +1,45 @@
-<p>playback-controls works!</p>
+<div class="controls-container">
+
+  <div class="song-info">
+    <img src="https://i.scdn.co/image/ab67616d0000b273e31219b139f0b8ffc1164177" alt="Portada" class="album-art">
+    <div class="song-details">
+      <span class="song-title">Bohemian Rhapsody</span>
+      <span class="song-artist text-secondary">Queen</span>
+    </div>
+    <i class="far fa-heart icon-btn"></i>
+  </div>
+
+  <div class="center-controls">
+    <div class="buttons-container">
+      <button class="control-btn">
+        <i class="fas fa-random text-secondary"></i>
+      </button>
+      <button class="control-btn">
+        <i class="fas fa-backward-step"></i>
+      </button>
+      
+      <button class="control-btn play">
+        <i class="fas fa-play"></i>
+      </button>
+
+      <button class="control-btn">
+        <i class="fas fa-forward-step"></i>
+      </button>
+      <button class="control-btn">
+        <i class="fas fa-redo text-secondary"></i>
+      </button>
+    </div>
+
+    <div class="progress-bar-container">
+      <span class="time text-secondary">1:30</span>
+      <input type="range" class="progress-slider" value="30" min="0" max="100">
+      <span class="time text-secondary">3:45</span>
+    </div>
+  </div>
+
+  <div class="volume-controls">
+    <i class="fas fa-volume-down text-secondary icon-btn"></i>
+    <input type="range" class="volume-slider" value="80" min="0" max="100">
+  </div>
+
+</div>
