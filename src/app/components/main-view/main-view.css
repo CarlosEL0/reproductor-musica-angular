@@ -1,27 +1,26 @@
 .main-view-container {
-  /* Añadimos padding para que el contenido no esté pegado a los bordes */
   padding: 1.5rem;
+  /* El color de fondo ya está en app.css */
 }
 
 h2 {
   font-size: 1.75rem;
   font-weight: 700;
   margin-bottom: 1.5rem;
+  color: var(--color-blanco);
 }
 
 .grid-container {
   display: grid;
   /* Crea columnas automáticas:
-    - minmax(180px, 1fr): Cada tarjeta mide MÍNIMO 180px, pero
-      se estirará (1fr) para ocupar el espacio disponible.
-    - auto-fill: Llena la fila con tantas columnas como quepan.
+     Cada tarjeta mide MÍNIMO 180px, pero se estirará (1fr)
+     para ocupar el espacio. Llena la fila con tantas como quepan.
   */
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 2.5rem;
 }
 
-/* Diseño de Tarjeta */
+/* 1. Estilo de la Tarjeta */
 .card {
   position: relative; /* Clave para posicionar el botón de play */
   display: flex;
@@ -47,6 +46,7 @@ h2 {
 .card-title {
   font-size: 1rem;
   font-weight: 600;
+  color: var(--color-blanco);
   margin-bottom: 0.25rem;
   
   /* Para cortar texto largo */
@@ -55,31 +55,19 @@ h2 {
   text-overflow: ellipsis;
 }
 
-/* Diseño de Tarjeta (tipo Álbum) */
-.card.album .card-title {
-  margin-bottom: 0.5rem;
-}
-
-.card.album img {
-  border-radius: 50%; /* Portada redonda */
-}
-
 .card-description {
   font-size: 0.85rem;
-  /* Para cortar texto largo */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* (Hereda el color de la clase .text-secondary) */
 }
 
-/* --- ESTILOS PARA EL BOTÓN DE PLAY FLOTANTE --- */
 
+/* 2. Estilo del Botón de Play Flotante */
 .play-btn {
   /* Posicionamiento */
   position: absolute;
-  right: 1.5rem; 
-  /* Ajustamos 'bottom' basado en el tamaño de imagen + padding */
-  bottom: 7.5rem; 
+  right: 1.5rem;
+  /* Lo posicionamos cerca del fondo de la imagen */
+  bottom: 6.5rem; 
   
   /* Apariencia */
   background-color: var(--color-verde-spotify);
@@ -96,27 +84,19 @@ h2 {
   /* Oculto por defecto */
   opacity: 0;
   transform: translateY(10px); /* Lo movemos 10px hacia abajo */
-  
-  /* Transición suave */
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.3s ease;
   
   cursor: pointer;
-  z-index: 2; /* Asegura que esté sobre la imagen */
-}
-
-/* Ajuste para las tarjetas redondas de "álbum" */
-.card.album .play-btn {
-  bottom: 8.5rem;
+  z-index: 2; /* Sobre la imagen */
 }
 
 
-/* LA MAGIA: Cuanto el mouse pasa sobre .card... */
+/* 3. La Magia: Cuando pasas el mouse sobre .card... */
 .card:hover .play-btn {
-  opacity: 1; /* ...lo hacemos visible... */
-  transform: translateY(0); /* ...y lo regresamos a su posición original */
+  opacity: 1; /* ...se hace visible... */
+  transform: translateY(0); /* ...y sube a su posición original */
 }
 
-/* (Opcional) Pequeño efecto al presionar el botón */
 .play-btn:active {
   transform: scale(0.95);
 }
