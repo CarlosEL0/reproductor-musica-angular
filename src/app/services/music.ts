@@ -35,6 +35,7 @@ export class MusicService {
 
   public currentSong: Song | null = null;
   public isPlaying: boolean = false;
+  private currentSongIndex: number = -1; // Guardará la posición de la canción actual
 
   // Emitirán el estado actual a quien esté escuchando
   private currentTime = new BehaviorSubject<number>(0);
@@ -60,6 +61,7 @@ export class MusicService {
       this.audio.addEventListener('loadedmetadata', () => {
         this.duration.next(this.audio!.duration);
       });
+      this.audio.addEventListener('ended', () => this.playNext());
     }
   }
 
@@ -71,6 +73,7 @@ export class MusicService {
   loadSong(song: Song) {
     this.currentSong = song;
     // Si this.audio existe...
+    this.currentSongIndex = this.songs.findIndex(s => s.id === song.id);
     if (this.audio) {
       this.audio.src = this.currentSong.url;
       this.audio.load();
@@ -111,4 +114,45 @@ export class MusicService {
       this.audio.volume = volume / 100;
     }
   }
+
+  public playNext(): void {
+  // Si no hay índice, no hagas nada
+  if (this.currentSongIndex === -1) {
+    return;
+  }
+
+  // 1. Avanza al siguiente índice
+  this.currentSongIndex++;
+
+  // 2. Si nos pasamos del final, vuelve al inicio (loop)
+  if (this.currentSongIndex >= this.songs.length) {
+    this.currentSongIndex = 0;
+  }
+
+  // 3. Carga y reproduce la nueva canción
+  const nextSong = this.songs[this.currentSongIndex];
+  this.loadSong(nextSong);
+  this.play();
+}
+
+public playPrevious(): void {
+  // Si no hay índice, no hagas nada
+  if (this.currentSongIndex === -1) {
+    return;
+  }
+
+  // 1. Retrocede al índice anterior
+  this.currentSongIndex--;
+
+  // 2. Si nos pasamos del inicio, ve al final (loop)
+  if (this.currentSongIndex < 0) {
+    this.currentSongIndex = this.songs.length - 1;
+  }
+
+  // 3. Carga y reproduce la nueva canción
+  const prevSong = this.songs[this.currentSongIndex];
+  this.loadSong(prevSong);
+  this.play();
+}
+
 }
