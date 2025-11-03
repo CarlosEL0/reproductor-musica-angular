@@ -36,16 +36,29 @@
     </div>
 
     <div class="progress-bar-container">
-      <span class="time text-secondary">0:00</span>
-      <input type="range" class="progress-slider" value="0" min="0" max="100">
-      <span class="time text-secondary">3:45</span>
+      <span class="time text-secondary">{{ musicService.currentTime$ | async | formatTime }}</span>
+      <input 
+      type="range" 
+      class="progress-slider" 
+      [value]="(musicService.currentTime$ | async) || 0" 
+      [max]="(musicService.duration$ | async) || 0"
+      (input)="onSeek($event)"
+    >
+      <span class="time text-secondary">{{ musicService.duration$ | async | formatTime }}</span>
     </div>
   </div>
 
 
-  <div class="volume-controls">
-    <i class="fas fa-volume-down text-secondary icon-btn"></i>
-    <input type="range" class="volume-slider" value="80" min="0" max="100">
-  </div>
+<div class="volume-controls">
+  <i class="fas fa-volume-down text-secondary icon-btn"></i>
+  <input 
+    type="range" 
+    class="volume-slider" 
+    value="80" 
+    min="0" 
+    max="100"
+    (input)="onVolumeChange($event)"
+  >
+</div>
 
 </div>

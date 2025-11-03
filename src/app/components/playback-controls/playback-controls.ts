@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common'; // <-- 1. AÑADE ESTO (lo necesitaremos)
-// 2. IMPORTA EL SERVICIO
 import { MusicService } from '../../services/music';
+import { FormatTimePipe } from '../../pipes/format-time-pipe';
 
 @Component({
   selector: 'app-playback-controls',
   standalone: true,
-  imports: [CommonModule], // <-- 3. AÑADE ESTO
+  imports: [CommonModule, FormatTimePipe],
   templateUrl: './playback-controls.html',
   styleUrls: ['./playback-controls.css']
 })
@@ -23,5 +23,17 @@ export class PlaybackControlsComponent {
     } else {
       this.musicService.play();
     }
+  }
+
+  // Se llama cuando el usuario MUEVE el slider de progreso
+  onSeek(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.musicService.seek(Number(input.value));
+  }
+
+  // Se llama cuando el usuario MUEVE el slider de volumen
+  onVolumeChange(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.musicService.changeVolume(Number(input.value));
   }
 }
