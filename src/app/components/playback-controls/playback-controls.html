@@ -1,13 +1,15 @@
 <div class="controls-container">
 
-  <div class="song-info">
-    <img src="https://i.scdn.co/image/ab67616d0000b273e31219b139f0b8ffc1164177" alt="Portada" class="album-art">
+  <div class="song-info" *ngIf="musicService.currentSong as song">
+    <img [src]="song.albumArt" alt="Portada" class="album-art">
     <div class="song-details">
-      <span class="song-title">Bohemian Rhapsody</span>
-      <span class="song-artist text-secondary">Queen</span>
+      <span class="song-title">{{ song.title }}</span>
+      <span class="song-artist text-secondary">{{ song.artist }}</span>
     </div>
     <i class="far fa-heart icon-btn"></i>
   </div>
+  <div class*="song-info" *ngIf="!musicService.currentSong"></div>
+
 
   <div class="center-controls">
     <div class="buttons-container">
@@ -17,9 +19,12 @@
       <button class="control-btn">
         <i class="fas fa-backward-step"></i>
       </button>
-      
-      <button class="control-btn play">
-        <i class="fas fa-play"></i>
+
+      <button class="control-btn play" (click)="onPlayPause()">
+        <i class="fas" 
+           [class.fa-play]="!musicService.isPlaying"
+           [class.fa-pause]="musicService.isPlaying">
+        </i>
       </button>
 
       <button class="control-btn">
@@ -31,11 +36,12 @@
     </div>
 
     <div class="progress-bar-container">
-      <span class="time text-secondary">1:30</span>
-      <input type="range" class="progress-slider" value="30" min="0" max="100">
+      <span class="time text-secondary">0:00</span>
+      <input type="range" class="progress-slider" value="0" min="0" max="100">
       <span class="time text-secondary">3:45</span>
     </div>
   </div>
+
 
   <div class="volume-controls">
     <i class="fas fa-volume-down text-secondary icon-btn"></i>

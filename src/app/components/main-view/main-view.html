@@ -1,34 +1,24 @@
 <div class="main-view-container">
   
   <h2>Tu Biblioteca Local</h2>
+<div class="main-view-container">
+  
+  <h2>Tu Biblioteca Local</h2>
+
   <div class="grid-container">
     
-    <div class="card">
-      <img src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fgraffica.info%2Fquien-diseno-el-iconico-elogo-de-queen%2F&psig=AOvVaw2GY9a0z3-LjDXL0K_7UTzT&ust=1762238356179000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCPDFv8yv1ZADFQAAAAAdAAAAABAE" alt="Album">
+    <div class="card" *ngFor="let song of songs" (click)="playSong(song)">
+      
+      <img [src]="song.albumArt" [alt]="song.title">
+      
       <button class="play-btn">
         <i class="fas fa-play"></i>
       </button>
-      <span class="card-title">Queen</span>
-      <span class="card-description text-secondary">Tu Canción Local 1</span>
-    </div>
-    
-    <div class="card">
-      <img src="https://i.scdn.co/image/ab67616d0000b273a1029c31a89c3683f0f3e6f9" alt="Album">
-      <button class="play-btn">
-        <i class="fas fa-play"></i>
-      </button>
-      <span class="card-title">Daft Punk</span>
-      <span class="card-description text-secondary">Tu Canción Local 2</span>
+
+      <span class="card-title">{{ song.title }}</span>
+      <span class="card-description text-secondary">{{ song.artist }}</span>
     </div>
 
-    <div class="card">
-      <img src="https://i.scdn.co/image/ab67616d0000b27375a09ab16c867201c7193f54" alt="Album">
-      <button class="play-btn">
-        <i class="fas fa-play"></i>
-      </button>
-      <span class="card-title">The Weeknd</span>
-      <span class="card-description text-secondary">Tu Canción Local 3</span>
-    </div>
-
-    </div>
+  </div>
+</div>
 </div>

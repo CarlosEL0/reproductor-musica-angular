@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-// 1. Importamos la "plantilla" de canción que creamos
+// --- 1. IMPORTA Inject, PLATFORM_ID y isPlatformBrowser ---
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Song } from '../song.model';
 
 @Injectable({
@@ -7,48 +8,62 @@ import { Song } from '../song.model';
 })
 export class MusicService {
 
-  // 2. Este es el reproductor de audio real de HTML5
-  private audio = new Audio();
+  // --- 2. NO INICIALICES 'audio' AQUÍ ---
+  // private audio = new Audio(); <-- Esta línea es el problema
+  private audio: HTMLAudioElement | undefined; // <-- La declaramos como indefinida
 
-  // 3. ¡TU LISTA DE CANCIONES!
-  // Aquí es donde añades tus canciones locales.
-  // Asegúrate que las rutas 'url' y 'albumArt' sean correctas.
+  // Tu lista de canciones (esto está bien)
   private songs: Song[] = [
     {
       id: 1,
       title: 'Título de tu Canción 1',
       artist: 'Nombre del Artista 1',
-      url: 'assets/audio/cancion1.mp3', // <-- La ruta a tu MP3
-      albumArt: 'assets/images/cover1.jpg' // <-- La ruta a tu imagen
+      url: 'assets/audio/cancion1.mp3',
+      albumArt: 'assets/images/cover1.jpg'
     },
+    // ...
   ];
 
-  // 4. Variables para saber qué está pasando
   public currentSong: Song | null = null;
   public isPlaying: boolean = false;
 
-  constructor() { }
+  // --- 3. INYECTA PLATFORM_ID en el constructor ---
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+    // Comprueba si estamos en el navegador
+    if (isPlatformBrowser(this.platformId)) {
+      // Si SÍ estamos en el navegador, AHORA SÍ crea el audio
+      this.audio = new Audio();
+    }
+  }
 
-  // 5. Función para cargar una canción (pero no reproducirla)
+  // --- 4. AÑADE COMPROBACIONES en las funciones ---
+  // Tenemos que asegurarnos de que 'this.audio' exista antes de usarlo
+
   loadSong(song: Song) {
     this.currentSong = song;
-    this.audio.src = this.currentSong.url;
-    this.audio.load();
+    // Si this.audio existe...
+    if (this.audio) {
+      this.audio.src = this.currentSong.url;
+      this.audio.load();
+    }
   }
 
-  // 6. Función para reproducir
   play() {
-    this.audio.play();
-    this.isPlaying = true;
+    // Si this.audio existe...
+    if (this.audio) {
+      this.audio.play();
+      this.isPlaying = true;
+    }
   }
 
-  // 7. Función para pausar
   pause() {
-    this.audio.pause();
-    this.isPlaying = false;
+    // Si this.audio existe...
+    if (this.audio) {
+      this.audio.pause();
+      this.isPlaying = false;
+    }
   }
 
-  // 8. Función para obtener la lista de canciones
   getSongs(): Song[] {
     return this.songs;
   }
