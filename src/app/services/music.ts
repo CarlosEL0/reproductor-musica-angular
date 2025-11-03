@@ -16,11 +16,18 @@ export class MusicService {
   private songs: Song[] = [
     {
       id: 1,
-      title: 'Título de tu Canción 1',
-      artist: 'Nombre del Artista 1',
+      title: 'Ambien slide',
+      artist: 'Cigarettes after sex',
       url: 'assets/audio/cancion1.mp3',
       albumArt: 'assets/images/cover1.jpg'
     },
+    {
+      id:2,
+      title: 'House of ballons',
+      artist: 'The weeknd',
+      url: 'assets/audio/house of ballons.mp3',
+      albumArt: 'assets/images/cover2.jpeg'
+    }
     // ...
   ];
 
