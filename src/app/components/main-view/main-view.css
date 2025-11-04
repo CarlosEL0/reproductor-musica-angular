@@ -100,3 +100,17 @@ h2 {
 .play-btn:active {
   transform: scale(0.95);
 }
+
+.card.spotify-result {
+  cursor: default;
+}
+
+.card.spotify-result:hover {
+  background-color: #181818; /* No cambia de color al pasar el mouse */
+}
+
+.card.spotify-result .play-btn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: var(--color-gris-claro);
+}
