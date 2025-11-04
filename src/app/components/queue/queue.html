@@ -1,1 +1,19 @@
-<p>queue works!</p>
+<div class="queue-container">
+  <h3>Lista de Reproducción</h3>
+
+  <ul class="queue-list">
+    <li 
+      class="queue-item" 
+      *ngFor="let song of songs"
+      (click)="playSong(song)"
+
+      [class.active]="song.id === musicService.currentSong?.id">
+
+      <img [src]="song.albumArt" alt="cover" class="queue-art">
+      <div class="queue-details">
+        <span class="queue-title">{{ song.title }}</span>
+        <span class="queue-artist text-secondary">{{ song.artist }}</span>
+      </div>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,63 @@
+.queue-container h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-blanco);
+  margin-bottom: 1.5rem;
+}
+
+.queue-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.queue-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.queue-item:hover {
+  background-color: var(--color-gris-oscuro);
+}
+
+/* ESTILO PARA LA CANCIÓN QUE ESTÁ SONANDO */
+.queue-item.active {
+  background-color: var(--color-gris-oscuro);
+}
+.queue-item.active .queue-title {
+  color: var(--color-verde-spotify); /* Resaltamos el título */
+}
+
+.queue-art {
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+}
+
+.queue-details {
+  display: flex;
+  flex-direction: column;
+  /* Evita que el texto se desborde */
+  overflow: hidden; 
+}
+
+.queue-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-blanco);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.queue-artist {
+  font-size: 0.8rem;
+}
