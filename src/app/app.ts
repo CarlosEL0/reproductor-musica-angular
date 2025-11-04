@@ -6,6 +6,7 @@ import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './components/sidebar/sidebar';
 import { MainViewComponent } from './components/main-view/main-view';
 import { PlaybackControlsComponent } from './components/playback-controls/playback-controls';
+import { QueueComponent } from './components/queue/queue';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,8 @@ import { PlaybackControlsComponent } from './components/playback-controls/playba
     RouterOutlet, // (Déjalo si ya estaba)
     SidebarComponent,
     MainViewComponent,
-    PlaybackControlsComponent
+    PlaybackControlsComponent,
+    QueueComponent
   ],
 
   templateUrl: './app.html',
