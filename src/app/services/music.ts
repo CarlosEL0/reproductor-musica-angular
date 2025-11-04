@@ -42,6 +42,11 @@ export class MusicService {
   private currentSongIndex: number = -1; // Guardará la posición de la canción actual
   private spotifyToken: string | null = null;
 
+  // Guardará los resultados de la búsqueda de Spotify
+  private spotifySearchResults = new BehaviorSubject<any[]>([]);
+  // Hacemos un observable público para que los componentes se suscriban
+  public spotifySearchResults$ = this.spotifySearchResults.asObservable();
+
   // Emitirán el estado actual a quien esté escuchando
   private currentTime = new BehaviorSubject<number>(0);
   private duration = new BehaviorSubject<number>(0);
@@ -203,6 +208,50 @@ private async ensureToken(): Promise<void> {
   if (!this.spotifyToken) {
     // Solo pedirá el token la primera vez
     await this.getSpotifyToken();
+  }
+}
+
+/**
+ * Busca pistas en Spotify usando el token.
+ */
+public async searchSpotify(term: string): Promise<void> {
+  // Si el término de búsqueda está vacío, limpia los resultados y sal
+  if (!term) {
+    this.spotifySearchResults.next([]);
+    return;
+  }
+
+  // 1. Asegúrate de que tenemos un token válido
+  await this.ensureToken();
+
+  // Si no hay token después de intentar obtenerlo, sal
+  if (!this.spotifyToken) {
+    console.error("No hay token de Spotify, no se puede buscar.");
+    return;
+  }
+
+  // 2. Prepara los 'headers' con el token
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${this.spotifyToken}`
+  });
+
+  // 3. Prepara los 'params' (parámetros) de la URL
+  const params = new HttpParams()
+    .set('q', term)       // El término de búsqueda
+    .set('type', 'track') // Solo buscamos canciones ('track')
+    .set('limit', '20');  // Traer 20 resultados
+
+  try {
+    // 4. Llama a la API de Búsqueda de Spotify
+    const response: any = await firstValueFrom(
+      this.http.get('http://googleusercontent.com/spotify.com/2', { headers, params })
+    );
+
+    // 5. "Emite" los resultados para que el main-view los reciba
+    this.spotifySearchResults.next(response.tracks.items);
+
+  } catch (error) {
+    console.error('Error al buscar en Spotify', error);
   }
 }
 

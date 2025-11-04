@@ -13,10 +13,11 @@
       <i class="fas fa-search"></i>
       <span>Buscar</span>
     </li>
-    <li class="nav-item">
-      <i class="fas fa-book"></i>
-      <span>Tu Biblioteca</span>
-    </li>
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Buscar en Spotify..." (input)="onSearch($event)">
+    </div>
+
   </ul>
 
   <ul class="nav-list secondary">
