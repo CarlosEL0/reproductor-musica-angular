@@ -1,3 +1,7 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { environment } from '../../environments/environments'; // <-- Importa tus llaves
+import { firstValueFrom } from 'rxjs'; // Lo usaremos para facilitar las peticiones
+
 // --- 1. IMPORTA Inject, PLATFORM_ID y isPlatformBrowser ---
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
@@ -36,6 +40,7 @@ export class MusicService {
   public currentSong: Song | null = null;
   public isPlaying: boolean = false;
   private currentSongIndex: number = -1; // Guardará la posición de la canción actual
+  private spotifyToken: string | null = null;
 
   // Emitirán el estado actual a quien esté escuchando
   private currentTime = new BehaviorSubject<number>(0);
@@ -46,7 +51,7 @@ export class MusicService {
   public duration$ = this.duration.asObservable();
 
   // --- 3. INYECTA PLATFORM_ID en el constructor ---
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object, private http: HttpClient) {
     // Comprueba si estamos en el navegador
     if (isPlatformBrowser(this.platformId)) {
       // Si SÍ estamos en el navegador, AHORA SÍ crea el audio
@@ -153,6 +158,52 @@ public playPrevious(): void {
   const prevSong = this.songs[this.currentSongIndex];
   this.loadSong(prevSong);
   this.play();
+}
+
+/**
+ * Obtiene un token de acceso de Spotify usando nuestras llaves.
+ */
+private async getSpotifyToken(): Promise<void> {
+  // 1. Obtenemos las credenciales del environment
+  const clientId = environment.spotifyClientId;
+  const clientSecret = environment.spotifyClientSecret;
+
+  // 2. Spotify pide las credenciales en formato Base64
+  const authHeader = 'Basic ' + btoa(clientId + ':' + clientSecret);
+
+  // 3. Preparamos el 'body' de la petición
+  const body = new HttpParams().set('grant_type', 'client_credentials');
+
+  // 4. Preparamos las 'headers' de la petición
+  const headers = new HttpHeaders({
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Authorization': authHeader
+  });
+
+  try {
+    // 5. Hacemos la petición POST a la API de Spotify
+    const response: any = await firstValueFrom(
+      this.http.post('https://accounts.spotify.com/api/token', body.toString(), { headers })
+    );
+
+    // 6. Guardamos el token que nos devolvió
+    this.spotifyToken = response.access_token;
+    console.log('¡Token de Spotify obtenido con éxito!');
+
+  } catch (error) {
+    console.error('Error al obtener el token de Spotify', error);
+  }
+}
+
+/**
+ * Un 'helper' para asegurarnos de que tenemos un token antes de hacer cualquier búsqueda.
+ * Si no lo tenemos, lo pide.
+ */
+private async ensureToken(): Promise<void> {
+  if (!this.spotifyToken) {
+    // Solo pedirá el token la primera vez
+    await this.getSpotifyToken();
+  }
 }
 
 }
