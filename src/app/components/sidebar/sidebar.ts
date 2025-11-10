@@ -1,20 +1,22 @@
 import { Component } from '@angular/core';
-import { MusicService } from '../../services/music';
+// 1. IMPORTA EL NUEVO SERVICIO
+import { SpotifyService } from '../../services/spotify';
 
 @Component({
   selector: 'app-sidebar',
+  standalone: true,
   imports: [],
   templateUrl: './sidebar.html',
-  styleUrl: './sidebar.css'
+  styleUrls: ['./sidebar.css']
 })
 export class SidebarComponent {
-// 2. INYÉCTALO EN EL CONSTRUCTOR
-  constructor(private musicService: MusicService) { }
 
-  // 3. AÑADE LA FUNCIÓN DE BÚSQUEDA
+  // 2. INYÉCTALO (puedes borrar el MusicService si ya no se usa aquí)
+  constructor(private spotifyService: SpotifyService) { }
+
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
-    // Llama al servicio cada vez que el usuario teclea
-    this.musicService.searchSpotify(input.value);
+    // 3. LLAMA AL SERVICIO CORRECTO
+    this.spotifyService.searchSpotify(input.value);
   }
 }

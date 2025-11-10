@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 // 1. Importa el servicio y el modelo de canción
 import { MusicService } from '../../services/music';
+import { SpotifyService } from '../../services/spotify';
 import { Song } from '../../song.model';
 import { CommonModule, AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs'; 
@@ -19,7 +20,7 @@ export class MainViewComponent implements OnInit {
   public spotifyResults$: Observable<any[]>;
 
   // 3. "Inyecta" el servicio en el constructor
-  constructor(private musicService: MusicService) {
+  constructor(private musicService: MusicService, private spotifyService: SpotifyService) {
     this.spotifyResults$ = this.musicService.spotifySearchResults$;
    }
 

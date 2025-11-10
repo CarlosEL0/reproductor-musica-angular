@@ -1,6 +1,3 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { environment } from '../../environments/environments'; // <-- Importa tus llaves
-import { firstValueFrom } from 'rxjs'; // Lo usaremos para facilitar las peticiones
 
 // --- 1. IMPORTA Inject, PLATFORM_ID y isPlatformBrowser ---
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
@@ -56,7 +53,7 @@ export class MusicService {
   public duration$ = this.duration.asObservable();
 
   // --- 3. INYECTA PLATFORM_ID en el constructor ---
-  constructor(@Inject(PLATFORM_ID) private platformId: Object, private http: HttpClient) {
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
     // Comprueba si estamos en el navegador
     if (isPlatformBrowser(this.platformId)) {
       // Si SÍ estamos en el navegador, AHORA SÍ crea el audio
@@ -165,94 +162,9 @@ public playPrevious(): void {
   this.play();
 }
 
-/**
- * Obtiene un token de acceso de Spotify usando nuestras llaves.
- */
-private async getSpotifyToken(): Promise<void> {
-  // 1. Obtenemos las credenciales del environment
-  const clientId = environment.spotifyClientId;
-  const clientSecret = environment.spotifyClientSecret;
 
-  // 2. Spotify pide las credenciales en formato Base64
-  const authHeader = 'Basic ' + btoa(clientId + ':' + clientSecret);
 
-  // 3. Preparamos el 'body' de la petición
-  const body = new HttpParams().set('grant_type', 'client_credentials');
 
-  // 4. Preparamos las 'headers' de la petición
-  const headers = new HttpHeaders({
-    'Content-Type': 'application/x-www-form-urlencoded',
-    'Authorization': authHeader
-  });
 
-  try {
-    // 5. Hacemos la petición POST a la API de Spotify
-    const response: any = await firstValueFrom(
-      this.http.post('https://accounts.spotify.com/api/token', body.toString(), { headers })
-    );
-
-    // 6. Guardamos el token que nos devolvió
-    this.spotifyToken = response.access_token;
-    console.log('¡Token de Spotify obtenido con éxito!');
-
-  } catch (error) {
-    console.error('Error al obtener el token de Spotify', error);
-  }
-}
-
-/**
- * Un 'helper' para asegurarnos de que tenemos un token antes de hacer cualquier búsqueda.
- * Si no lo tenemos, lo pide.
- */
-private async ensureToken(): Promise<void> {
-  if (!this.spotifyToken) {
-    // Solo pedirá el token la primera vez
-    await this.getSpotifyToken();
-  }
-}
-
-/**
- * Busca pistas en Spotify usando el token.
- */
-public async searchSpotify(term: string): Promise<void> {
-  // Si el término de búsqueda está vacío, limpia los resultados y sal
-  if (!term) {
-    this.spotifySearchResults.next([]);
-    return;
-  }
-
-  // 1. Asegúrate de que tenemos un token válido
-  await this.ensureToken();
-
-  // Si no hay token después de intentar obtenerlo, sal
-  if (!this.spotifyToken) {
-    console.error("No hay token de Spotify, no se puede buscar.");
-    return;
-  }
-
-  // 2. Prepara los 'headers' con el token
-  const headers = new HttpHeaders({
-    'Authorization': `Bearer ${this.spotifyToken}`
-  });
-
-  // 3. Prepara los 'params' (parámetros) de la URL
-  const params = new HttpParams()
-    .set('q', term)       // El término de búsqueda
-    .set('type', 'track') // Solo buscamos canciones ('track')
-    .set('limit', '20');  // Traer 20 resultados
-
-  try {
-    // 4. Llama a la API de Búsqueda de Spotify
-    const response: any = await firstValueFrom(
-      this.http.get('http://googleusercontent.com/spotify.com/2', { headers, params })
-    );
-
-    // 5. "Emite" los resultados para que el main-view los reciba
-    this.spotifySearchResults.next(response.tracks.items);
-
-  } catch (error) {
-    console.error('Error al buscar en Spotify', error);
-  }
-}
 
 }
