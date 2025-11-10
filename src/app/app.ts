@@ -7,6 +7,7 @@ import { SidebarComponent } from './components/sidebar/sidebar';
 import { MainViewComponent } from './components/main-view/main-view';
 import { PlaybackControlsComponent } from './components/playback-controls/playback-controls';
 import { QueueComponent } from './components/queue/queue';
+import { NavbarComponent } from './components/navbar/navbar';
 
 @Component({
   selector: 'app-root',

@@ -7,7 +7,7 @@ import { SpotifyService } from '../../services/spotify';
   templateUrl: './navbar.html',
   styleUrl: './navbar.css'
 })
-export class Navbar {
+export class NavbarComponent {
   constructor(private spotifyService: SpotifyService) { }
 
   onSearch(event: Event): void {
