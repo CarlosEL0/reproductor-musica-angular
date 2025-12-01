@@ -19,7 +19,8 @@ import { NavbarComponent } from './components/navbar/navbar';
     SidebarComponent,
     MainViewComponent,
     PlaybackControlsComponent,
-    QueueComponent
+    QueueComponent,
+    NavbarComponent
   ],
 
   templateUrl: './app.html',

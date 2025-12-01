@@ -1,38 +1,41 @@
 import { Component, OnInit } from '@angular/core';
-// 1. Importa el servicio y el modelo de canción
+import { CommonModule } from '@angular/common'; 
 import { MusicService } from '../../services/music';
 import { SpotifyService } from '../../services/spotify';
 import { Song } from '../../song.model';
-import { CommonModule, AsyncPipe } from '@angular/common';
-import { Observable } from 'rxjs'; 
 
 @Component({
   selector: 'app-main-view',
   standalone: true,
-  imports: [CommonModule, AsyncPipe], // Lo arreglaremos si es necesario, puede que necesites CommonModule
+  imports: [CommonModule], // Ya no necesitamos AsyncPipe
   templateUrl: './main-view.html',
   styleUrls: ['./main-view.css']
 })
 export class MainViewComponent implements OnInit {
 
-  // 2. Esta variable guardará tu lista de canciones
   public songs: Song[] = [];
-  public spotifyResults$: Observable<any[]>;
+  
+  // AHORA ES UNA LISTA SIMPLE, NO UN OBSERVABLE
+  public spotifyResults: any[] = [];
 
-  // 3. "Inyecta" el servicio en el constructor
-  constructor(private musicService: MusicService, private spotifyService: SpotifyService) {
-    this.spotifyResults$ = this.musicService.spotifySearchResults$;
-   }
+  constructor(
+    private musicService: MusicService,
+    private spotifyService: SpotifyService
+  ) {
+    // NOS SUSCRIBIMOS MANUALMENTE
+    // Cada vez que llegue un dato, actualizamos la variable
+    this.spotifyService.searchResults$.subscribe(datos => {
+      console.log('Actualizando vista con:', datos.length, 'canciones');
+      this.spotifyResults = datos;
+    });
+  }
 
-  // 4. Cuando el componente se inicia, pide las canciones
   ngOnInit(): void {
     this.songs = this.musicService.getSongs();
   }
 
-  // 5. Esta función se llamará cuando hagamos clic en una tarjeta
   playSong(song: Song): void {
     this.musicService.loadSong(song);
     this.musicService.play();
   }
-
 }

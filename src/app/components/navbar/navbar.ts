@@ -8,11 +8,13 @@ import { SpotifyService } from '../../services/spotify';
   styleUrl: './navbar.css'
 })
 export class NavbarComponent {
+
+  // Inyectamos el servicio de Spotify
   constructor(private spotifyService: SpotifyService) { }
 
   onSearch(event: Event): void {
     const input = event.target as HTMLInputElement;
-    // 3. LLAMA AL SERVICIO CORRECTO
+    console.log('Buscando:', input.value); // <-- Agrega este log para depurar
     this.spotifyService.searchSpotify(input.value);
   }
 }

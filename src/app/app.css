@@ -1,47 +1,70 @@
-/* src/app/app.component.css */
+/* src/app/app.css */
 .player-container {
   display: grid;
-  height: 100vh; /* Ocupa el 100% de la altura de la ventana */
-
-  /* Definimos la estructura:
-    Columnas: La primera (sidebar) de 250px, la segunda (main) toma el resto (1fr).
-    Filas: La primera (contenido) toma casi todo el alto (90vh), la segunda (reproductor) es fija de 100px.
-  */
- grid-template-columns: 250px 1fr 300px; /* (Sidebar, Main, Queue) */
-  grid-template-rows: 1fr 100px;
+  height: 100vh; /* Ocupa exactamente el 100% de la pantalla */
+  width: 100vw;
+  overflow: hidden; /* IMPORTANTE: Evita que aparezca doble scroll */
+  
+  /* Columnas: Sidebar (250px), Centro (Auto), Queue (280px) */
+  grid-template-columns: 250px 1fr 280px;
+  
+  /* Filas: Contenido (lo que sobre), Controles (90px fijos) */
+  grid-template-rows: 1fr 90px;
 }
 
-.main-content-area {
-  grid-column: 2 / 3;
-  grid-row: 1 / 2;
-
-  /* IMPORTANTE: Este contenedor ahora maneja el scroll */
-  overflow-y: auto; 
-}
-
+/* 1. SIDEBAR */
 .sidebar {
   grid-column: 1 / 2;
   grid-row: 1 / 2;
-  background-color: var(--color-negro); /* Color del sidebar */
+  background-color: var(--color-negro);
+  overflow-y: auto; /* Scroll interno si es necesario */
 }
 
-.main-view {
-  background-color: var(--color-negro-fondo); /* Color del fondo principal */
+/* 2. ÁREA CENTRAL (Navbar + Vistas) */
+.main-content-area {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  background-color: var(--color-negro-fondo);
+  display: flex;
+  flex-direction: column; /* Para apilar Navbar y MainView */
+  overflow: hidden; /* Evita que este contenedor crezca */
+  position: relative;
 }
 
+/* El Wrapper es el que hace scroll */
+.main-view-wrapper {
+  flex: 1; /* Ocupa el espacio restante bajo el navbar */
+  overflow-y: auto; /* AQUÍ está el scroll del contenido */
+  padding-bottom: 2rem; /* Espacio extra al final */
+}
+
+/* 3. QUEUE (Derecha) */
 .queue-area {
   grid-column: 3 / 4;
   grid-row: 1 / 2;
-  background-color: var(--color-negro); /* Fondo oscuro */
+  background-color: var(--color-negro);
   padding: 1.5rem;
-  overflow-y: auto; /* Scroll por si la lista es larga */
+  overflow-y: auto; /* Scroll interno */
+  border-left: 1px solid #181818;
 }
 
+/* 4. CONTROLES DE REPRODUCCIÓN (Abajo) */
 .playback-controls {
-  /* Ocupa ambas columnas (1 / 3 significa "desde la línea 1 hasta la 3") */
-  grid-column: 1 / 4;
-  grid-row: 2 / 3;
+  position: fixed; /* Lo fijamos a la pantalla */
+  bottom: 0;       /* Pegado abajo */
+  left: 0;         /* Pegado a la izquierda */
+  width: 100%;     /* Que ocupe todo el ancho */
+  height: 90px;    /* Altura fija */
+  
+  background-color: var(--color-gris-oscuro);
+  border-top: 1px solid #282828;
+  z-index: 999;    /* ¡Encima de todo lo demás! */
+  
+  /* Esto asegura que sea un grid para sus hijos internos */
+  display: block; 
+}
 
-  background-color: var(--color-gris-oscuro); /* Color de la barra de reproducción */
-  border-top: 1px solid #181818;
+/* Ajustamos el contenedor principal para que deje espacio al final */
+.player-container {
+  padding-bottom: 100px; /* Espacio para que la barra no tape el contenido */
 }

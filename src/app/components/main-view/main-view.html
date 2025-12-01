@@ -1,38 +1,32 @@
 <div class="main-view-container">
 
-  <ng-container *ngIf="spotifyResults$ | async as results">
-
-    <div *ngIf="results.length === 0; else showSpotifyResults">
-      <h2>Tu Biblioteca Local</h2>
-      <div class="grid-container">
-        <div class="card" *ngFor="let song of songs" (click)="playSong(song)">
-          <img [src]="song.albumArt" [alt]="song.title">
-          <button class="play-btn">
-            <i class="fas fa-play"></i>
-          </button>
-          <span class="card-title">{{ song.title }}</span>
-          <span class="card-description text-secondary">{{ song.artist }}</span>
-        </div>
+  <div *ngIf="spotifyResults.length === 0">
+    <h2>Tu Biblioteca Local</h2>
+    <div class="grid-container">
+      <div class="card" *ngFor="let song of songs" (click)="playSong(song)">
+        <img [src]="song.albumArt" [alt]="song.title">
+        <button class="play-btn"><i class="fas fa-play"></i></button>
+        <span class="card-title">{{ song.title }}</span>
+        <span class="card-description text-secondary">{{ song.artist }}</span>
       </div>
     </div>
+  </div>
 
-    <ng-template #showSpotifyResults>
-      <h2>Resultados de Spotify</h2>
-      <div class="grid-container">
-        <div class="card spotify-result" *ngFor="let track of results">
-          <img [src]="track.album.images[0].url" [alt]="track.name">
-
-          <button class="play-btn disabled">
-            <i class="fas fa-search"></i>
-          </button>
-
-          <span class="card-title">{{ track.name }}</span>
-          <span class="card-description text-secondary">
-            {{ track.artists[0].name }}
-          </span>
-        </div>
+  <div *ngIf="spotifyResults.length > 0">
+    <h2>Resultados de Búsqueda</h2>
+    <div class="grid-container">
+      <div class="card spotify-result" *ngFor="let track of spotifyResults">
+        
+        <img [src]="track.album.images[0]?.url || 'assets/images/cover1.jpg'" [alt]="track.name">
+        
+        <button class="play-btn disabled"><i class="fas fa-search"></i></button>
+        
+        <span class="card-title">{{ track.name }}</span>
+        <span class="card-description text-secondary">
+          {{ track.artists[0]?.name || 'Artista desconocido' }}
+        </span>
       </div>
-    </ng-template>
+    </div>
+  </div>
 
-  </ng-container>
 </div>

@@ -79,9 +79,13 @@ export class SpotifyService {
 
     try {
       // ESTA ES LA URL CORRECTA PARA LA BÚSQUEDA
-      const response: any = await firstValueFrom(
+ const response: any = await firstValueFrom(
         this.http.get('https://api.spotify.com/v1/search', { headers, params })
       );
+
+      // --- AÑADE ESTOS LOGS ---
+      console.log('Respuesta de Spotify:', response); // ¿Qué llegó?
+      console.log('Canciones encontradas:', response.tracks.items); // ¿Hay canciones?
       
       this.searchResults.next(response.tracks.items);
 
